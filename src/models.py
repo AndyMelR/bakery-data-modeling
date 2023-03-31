@@ -8,23 +8,66 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
+class User(Base):
+    __tablename__ = 'user'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
+    email = Column(String(300), nullable=False)
+    password = Column (String(9), nullable=False)
 
-class Address(Base):
-    __tablename__ = 'address'
+# class Follower(Base):
+#     __tablename__ = 'follower'
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String(250), nullable=False)
+#     email = Column(String(300), nullable=False)
+#     password = Column (String(9), nullable=False)
+
+
+class Photo(Base):
+    __tablename__ = 'photo'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    PhotoLocation = Column(String(300))
+    CreationDate = Column(Integer)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+
+class FeedItem(Base):
+    __tablename__ = 'feed'
+    id = Column(Integer, primary_key=True)
+    Contents = Column(String(500), nullable = False)
+    photo_id = Column(Integer, ForeignKey('photo.id'))
+    photo = relationship(Photo)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+
+class Follow(Base):
+    __tablename__ = 'follow'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+   
+  
+
+class Likes(Base):
+    __tablename__ = 'likes'
+    id = Column(Integer, primary_key=True)
+    photo_id = Column(Integer, ForeignKey('photo.id'))
+    photo = relationship(Photo)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+
+class Comments(Base):
+    __tablename__ = 'comments'
+    id = Column(Integer, primary_key=True)
+    comments: Column(String(500))
+    CreationDate: Column(Integer)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+
 
     def to_dict(self):
         return {}
