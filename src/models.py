@@ -66,7 +66,7 @@ class Likes(Base):
 class Comments(Base):
     __tablename__ = 'comments'
     id = Column(Integer, primary_key=True)
-    Comments= Column(String(500))
+    Comments= Column(String(500), nullable=False)
     CreationDate= Column(Integer)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
