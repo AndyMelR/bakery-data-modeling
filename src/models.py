@@ -17,12 +17,13 @@ class User(Base):
     email = Column(String(300), nullable=False)
     password = Column (String(9), nullable=False)
 
-# class Follower(Base):
-#     __tablename__ = 'follower'
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String(250), nullable=False)
-#     email = Column(String(300), nullable=False)
-#     password = Column (String(9), nullable=False)
+
+class Follower(Base):
+    __tablename__ = 'follower'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+   
 
 
 class Photo(Base):
@@ -38,7 +39,7 @@ class Photo(Base):
 class FeedItem(Base):
     __tablename__ = 'feed'
     id = Column(Integer, primary_key=True)
-    Contents = Column(String(500), nullable = False)
+    Content = Column(String(600), nullable = False)
     photo_id = Column(Integer, ForeignKey('photo.id'))
     photo = relationship(Photo)
     user_id = Column(Integer, ForeignKey('user.id'))
@@ -49,6 +50,8 @@ class Follow(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+    user_id2 = Column(Integer, ForeignKey('follower.id'))
+    user2 = relationship(Follower)
    
   
 
@@ -63,7 +66,7 @@ class Likes(Base):
 class Comments(Base):
     __tablename__ = 'comments'
     id = Column(Integer, primary_key=True)
-    comments: Column(String(500))
+    Comments: Column(String(500))
     CreationDate: Column(Integer)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
